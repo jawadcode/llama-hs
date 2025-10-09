@@ -22,21 +22,21 @@
       jailbreakUnbreak = pkg:
         pkgs.haskell.lib.doJailbreak (pkg.overrideAttrs (_: {meta = {};}));
 
-      packageName = "lc-hs";
+      packageName = "llama-hs";
     in {
-      # packages.${packageName} =
-      #   haskellPackages.callCabal2nix packageName self {
-      #   };
+      packages.${packageName} =
+        haskellPackages.callCabal2nix packageName self {
+        };
 
-      # packages.default = self.packages.${system}.${packageName};
-      # defaultPackage = self.packages.${system}.default;
+      packages.default = self.packages.${system}.${packageName};
+      defaultPackage = self.packages.${system}.default;
 
       devShells.default = pkgs.mkShell {
         buildInputs = [
           haskellPackages.haskell-language-server # you must build it with your ghc to work
           pkgs.cabal-install
         ];
-        # inputsFrom = builtins.attrValues self.packages.${system};
+        inputsFrom = builtins.attrValues self.packages.${system};
       };
       devShell = self.devShells.${system}.default;
     });
