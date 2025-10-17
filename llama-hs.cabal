@@ -65,16 +65,22 @@ executable llama-hs
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    -- other-modules:
+    other-modules:    Utils.Span
+                    , AST
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
     build-depends:    base ^>=4.20.0.0
+                    , relude ^>= 1.2.2.2
 
     -- Directories containing source files.
     hs-source-dirs:   src
+        
+    mixins:           base hiding (Prelude)
+                    , relude (Relude as Prelude)
+                    , relude
 
     -- Base language which the package is written in.
     default-language: GHC2024
