@@ -1,4 +1,8 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 module Utils.Span where
+
+import Relude
 
 data Span = Span { start :: Int, end :: Int }
 

@@ -1,6 +1,8 @@
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE NoImplicitPrelude, TypeFamilies #-}
 
 module AST (Pass) where
+
+import Relude
 
 data Pass = Parsed | Renamed | Typed
 
@@ -22,4 +24,3 @@ data Lit
   | LString Text
 
 type family XLam (p :: Pass)
-

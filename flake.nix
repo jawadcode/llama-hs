@@ -5,7 +5,7 @@
   description = "Lambda Calculus-like thing in Haskell";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -17,7 +17,7 @@
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
 
-      haskellPackages = pkgs.haskell.packages.ghc910;
+      haskellPackages = pkgs.haskell.packages.ghc9103;
 
       jailbreakUnbreak = pkg:
         pkgs.haskell.lib.doJailbreak (pkg.overrideAttrs (_: {meta = {};}));
@@ -34,7 +34,8 @@
       devShells.default = pkgs.mkShell {
         buildInputs = [
           haskellPackages.haskell-language-server # you must build it with your ghc to work
-          pkgs.cabal-install
+          # haskellPackages.hls-cabal-plugin
+          haskellPackages.cabal-install
         ];
         inputsFrom = builtins.attrValues self.packages.${system};
       };
