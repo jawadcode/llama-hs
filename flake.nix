@@ -24,20 +24,19 @@
 
       packageName = "llama-hs";
     in {
-      packages.${packageName} =
-        haskellPackages.callCabal2nix packageName self {
-        };
+      # packages.${packageName} = haskellPackages.callCabal2nix packageName self {};
 
-      packages.default = self.packages.${system}.${packageName};
-      defaultPackage = self.packages.${system}.default;
+      # packages.default = self.packages.${system}.${packageName};
+      # defaultPackage = self.packages.${system}.default;
 
       devShells.default = pkgs.mkShell {
         buildInputs = [
           haskellPackages.haskell-language-server # you must build it with your ghc to work
           # haskellPackages.hls-cabal-plugin
           haskellPackages.cabal-install
+          haskellPackages.hoogle
         ];
-        inputsFrom = builtins.attrValues self.packages.${system};
+        # inputsFrom = builtins.attrValues self.packages.${system};
       };
       devShell = self.devShells.${system}.default;
     });

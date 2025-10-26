@@ -1,9 +1,4 @@
-{-# LANGUAGE NoImplicitPrelude #-}
-
-module Main where
-
-import Relude
-import Lexer
+module Main (main) where
 
 main :: IO ()
-main = Lexer.main
+main = putStrLn "Hello, Haskell!"

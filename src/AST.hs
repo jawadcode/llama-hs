@@ -1,8 +1,6 @@
-{-# LANGUAGE NoImplicitPrelude, TypeFamilies #-}
+{-# LANGUAGE TypeFamilies #-}
 
 module AST (Pass) where
-
-import Relude
 
 data Pass = Parsed | Renamed | Typed
 
