@@ -9,6 +9,7 @@ module Lexer
     alexMonadScan,
     RangedToken,
     Token (..),
+    runLex,
   )
 where
 
