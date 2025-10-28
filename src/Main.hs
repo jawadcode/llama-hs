@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Lexer
+import Lexer qualified (alexScanTokens, readLine)
 
 main :: IO ()
-main = print =<< runLex
+main = Lexer.readLine <&> Lexer.alexScanTokens >>= print
