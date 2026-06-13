@@ -20,14 +20,13 @@ extra-doc-files:    CHANGELOG.md
 common common-properties
     ghc-options:        -Wall
     other-extensions:   ApplicativeDo, OverloadedStrings
-    --                         blaze it
     build-depends:
-        base ^>= 4.20,
-        bytestring ^>= 0.12.2.0
+        base >= 4.20.2 && < 4.21,
+        bytestring  >= 0.12.2 && < 0.13
     default-language:   GHC2024
 
 common relude-auto
-    build-depends:      relude ^>= 1.2.2.2
+    build-depends:      relude  >= 1.2.2 && < 1.3
     mixins:
         base hiding (Prelude),
         relude (Relude as Prelude),
@@ -46,8 +45,8 @@ library lexer
     hs-source-dirs:     src-lexer
     build-depends:
         llama-hs:utils,
-        array ^>= 0.5.8.0,
-    build-tool-depends: alex:alex ^>= 3.5.4.0
+        array >= 0.5.8 && < 0.6
+    build-tool-depends: alex:alex ^>= 3.5.4.2
 
 executable llama-hs
     import:             common-properties, relude-auto

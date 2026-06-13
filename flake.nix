@@ -1,11 +1,8 @@
-# SPDX-FileCopyrightText: 2021 Serokell <https://serokell.io/>
-#
-# SPDX-License-Identifier: CC0-1.0
 {
   description = "Lambda Calculus-like thing in Haskell";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -21,7 +18,6 @@
 
       jailbreakUnbreak = pkg:
         pkgs.haskell.lib.doJailbreak (pkg.overrideAttrs (_: {meta = {};}));
-
       packageName = "llama-hs";
     in {
       packages.${packageName} = haskellPackages.callCabal2nix packageName self {};
@@ -31,11 +27,12 @@
 
       devShells.default = pkgs.mkShell {
         buildInputs = [
-          haskellPackages.haskell-language-server # you must build it with your ghc to work
-          # haskellPackages.hls-cabal-plugin
+          haskellPackages.haskell-language-server
           haskellPackages.cabal-install
-          haskellPackages.hoogle
+          haskellPackages.hlint
+          haskellPackages.ormolu
         ];
+        withHoogle = true;
         inputsFrom = builtins.attrValues self.packages.${system};
       };
       devShell = self.devShells.${system}.default;
