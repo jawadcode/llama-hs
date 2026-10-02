@@ -32,7 +32,7 @@ tokens :-
 <state_comment>  \n       { skip }
 <0>              let      { tok Let }
 <0>              in       { tok In }
-<0>              =        { tok Equals }
+<0>              "="      { tok Equals }
 <0>              "+"      { tok Plus }
 <0>              "-"      { tok Minus }
 <0>              "*"      { tok Multiply }

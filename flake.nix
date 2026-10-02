@@ -6,35 +6,33 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-  }:
-    flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
+  outputs = { self, nixpkgs, flake-utils, }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
 
-      haskellPackages = pkgs.haskell.packages.ghc9103;
+        haskellPackages = pkgs.haskell.packages.ghc9103;
 
-      jailbreakUnbreak = pkg:
-        pkgs.haskell.lib.doJailbreak (pkg.overrideAttrs (_: {meta = {};}));
-      packageName = "llama-hs";
-    in {
-      packages.${packageName} = haskellPackages.callCabal2nix packageName self {};
+        jailbreakUnbreak = pkg:
+          pkgs.haskell.lib.doJailbreak (pkg.overrideAttrs (_: { meta = { }; }));
+        packageName = "llama-hs";
+      in
+      {
+        packages.${packageName} = haskellPackages.callCabal2nix packageName self { };
 
-      packages.default = self.packages.${system}.${packageName};
-      defaultPackage = self.packages.${system}.default;
+        packages.default = self.packages.${system}.${packageName};
+        defaultPackage = self.packages.${system}.default;
 
-      devShells.default = pkgs.mkShell {
-        buildInputs = [
-          haskellPackages.haskell-language-server
-          haskellPackages.cabal-install
-          haskellPackages.hlint
-          haskellPackages.ormolu
-        ];
-        withHoogle = true;
-        inputsFrom = builtins.attrValues self.packages.${system};
-      };
-      devShell = self.devShells.${system}.default;
-    });
+        devShells.default = pkgs.mkShell {
+          buildInputs = [
+            haskellPackages.haskell-language-server
+            haskellPackages.cabal-install
+            haskellPackages.hlint
+            haskellPackages.ormolu
+          ];
+          withHoogle = true;
+          inputsFrom = builtins.attrValues self.packages.${system};
+        };
+        devShell = self.devShells.${system}.default;
+      });
 }

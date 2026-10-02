@@ -13,14 +13,13 @@ data Range = Range {start :: !Position, end :: !Position}
 data Ranged a = Ranged {contents :: a, range :: Range}
 
 data Position = Position {offset :: !Int, line :: !Int, column :: !Int}
-  deriving (Show)
+  deriving (Show, Eq, Ord)
 
 instance Semigroup Range where
-  (<>) a b = Range {start = start a, end = end b}
+  (<>) a b = Range {start = start a `min` start b, end = end a `max` end b}
 
 instance Functor Ranged where
   fmap f (Ranged {contents, range}) = Ranged {contents = f contents, range}
 
--- FIXME: show is not a visible method of Show??
 instance (Show a) => Show (Ranged a) where
   show (Ranged {contents, range}) = show contents ++ " <" ++ show range ++ ">"
