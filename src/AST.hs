@@ -2,6 +2,8 @@
 
 module AST (Pass) where
 
+import Relude
+
 data Pass = Parsed | Renamed | Typed
 
 data Exp (p :: Pass)

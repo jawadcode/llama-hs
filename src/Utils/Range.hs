@@ -1,10 +1,6 @@
-module Utils.Range
-  ( Range (..),
-    Ranged (..),
-    Position (..),
-  )
-where
+module Utils.Range (Range (..), Ranged (..), Position (..)) where
 
+import Relude
 import Text.Show qualified
 
 data Range = Range {start :: !Position, end :: !Position}

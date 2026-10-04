@@ -22,33 +22,26 @@ common common-properties
     other-extensions:   ApplicativeDo, OverloadedStrings
     build-depends:
         base >= 4.20 && < 4.23,
-        bytestring ^>= 0.12.2
+        bytestring ^>= 0.12
     default-language:   GHC2024
 
-common relude-auto
-    build-depends:      relude  ^>= 1.2.2
-    mixins:
-        base hiding (Prelude),
-        relude (Relude as Prelude),
-        relude
+common relude
+    build-depends:      relude  ^>= 1.2
+    default-extensions: NoImplicitPrelude
 
-library utils
-    import:             common-properties, relude-auto
-    exposed-modules:    Utils.Range
-    hs-source-dirs:     src/utils
-
-library lexer
-    import:             common-properties
-    exposed-modules:    Lexer
-    hs-source-dirs:     src/lexer
-    build-depends:
-        llama-hs:utils,
-        array ^>= 0.5
+library
+    import:             common-properties, relude
+    hs-source-dirs:     src
+    exposed-modules:
+        Utils.Range
+        Lexer.Token
+        Lexer
+        AST
+    build-depends:      array ^>= 0.5
     build-tool-depends: alex:alex ^>= 3.5
 
 executable llama-hs
-    import:             common-properties, relude-auto
+    import:             common-properties, relude
+    hs-source-dirs:     app
     main-is:            Main.hs
-    other-modules:      AST
-    build-depends:      llama-hs:lexer
-    hs-source-dirs:     src
+    build-depends:      llama-hs

@@ -1,19 +1,18 @@
 {
-module Lexer
-  ( Token (..),
-    AlexPosn (..),
-    scanMany,
-    readLine,
-  )
-where
+{-# LANGUAGE ImplicitPrelude #-}
+{-# OPTIONS_GHC -Wno-unused-imports -Wno-missing-signatures -Wno-unused-matches -Wno-unused-top-binds #-}
+
+module Lexer (Token (..), AlexPosn (..), scanMany) where
 
 import Control.Monad (when)
 import Data.ByteString.Lazy.Char8 (ByteString)
-import Data.ByteString.Lazy.Char8 qualified as BS (foldl', pack, readInt, take)
+import Data.ByteString.Lazy.Char8 qualified as BS (foldl', pack, readInt, take, toStrict)
 import Data.Function ((&))
 import Data.Int (Int64)
 import Data.Maybe (fromJust)
+
 import Utils.Range (Position (..), Range (..), Ranged (..))
+import Lexer.Token (Token (..), RangedToken)
 }
 
 %wrapper "monadUserState-bytestring"
@@ -41,21 +40,6 @@ tokens :-
 <0>              @ident   { tokIdent }
 
 {
-data Token
-  = Let
-  | In
-  | Equals
-  | Plus
-  | Minus
-  | Multiply
-  | Divide
-  | Ident ByteString
-  | IntLit Int
-  | EOF
-  deriving (Eq, Show)
-
-type RangedToken = Ranged Token
-
 data AlexUserState = AlexUserState {commentDepth :: Int}
 
 alexInitUserState :: AlexUserState
@@ -106,7 +90,7 @@ tokInt input@(_, _, string, _) len =
 tokIdent input@(_, _, string, _) len =
   pure
     Ranged
-      { contents = Ident $ BS.take len string,
+      { contents = BS.take len string & BS.toStrict & Ident,
         range = getRange input len
       }
 
@@ -127,7 +111,4 @@ scanMany input = runAlex input go
       if contents output == EOF
         then pure [output]
         else (output :) <$> go
-
-readLine :: IO ByteString
-readLine = BS.pack <$> getLine
 }
