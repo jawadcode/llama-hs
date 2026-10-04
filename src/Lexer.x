@@ -1,6 +1,5 @@
 {
 {-# LANGUAGE ImplicitPrelude #-}
-{-# OPTIONS_GHC -Wno-unused-imports -Wno-missing-signatures -Wno-unused-matches -Wno-unused-top-binds #-}
 
 module Lexer (Token (..), AlexPosn (..), scanMany) where
 
