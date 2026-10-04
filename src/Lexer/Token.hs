@@ -1,6 +1,6 @@
 module Lexer.Token (Token (..), RangedToken) where
 
-import Relude (ByteString, Eq, Int, Show)
+import Relude
 import Utils.Range (Ranged)
 
 data Token
