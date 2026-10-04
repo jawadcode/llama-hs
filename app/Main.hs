@@ -1,8 +1,7 @@
 module Main (main) where
 
-import Relude
-
 import Lexer qualified (scanMany)
+import Relude
 import System.IO (hPutStrLn)
 
 main :: IO ()
