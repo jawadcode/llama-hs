@@ -27,6 +27,7 @@
           buildInputs = [
             haskellPackages.haskell-language-server
             haskellPackages.cabal-install
+            haskellPackages.cabal-gild
             haskellPackages.hlint
             haskellPackages.ormolu
           ];
