@@ -1,47 +1,48 @@
-cabal-version:      3.0
-name:               llama-hs
-version:            0.1.0.0
-synopsis:           The Llama Programming Language
--- description:
-homepage:           https://github.com/jawadcode/llama-hs.git
-license:            MIT
-license-file:       LICENSE
-author:             Jawad W. Ahmed
-maintainer:         jawad.w.ahmed@gmail.com
--- A copyright notice.
--- copyright:
-category:           Compilers
-build-type:         Simple
-extra-doc-files:    CHANGELOG.md
--- Extra source files to be distributed with the package, such as examples, or a
--- tutorial module.
--- extra-source-files:
+cabal-version: 3.0
+name: llama-hs
+version: 0.1.0.0
+synopsis: The Llama Programming Language
+description: Empowering everyone to build nonexistent software.
+homepage: https://github.com/jawadcode/llama-hs.git
+license: MIT
+license-file: LICENSE
+author: Jawad W. Ahmed
+maintainer: jawad.w.ahmed@gmail.com
+copyright: (c) 2025-2026 Jawad W. Ahmed
+category: Compilers
+build-type: Simple
+extra-doc-files: CHANGELOG.md
 
 common common-properties
-    ghc-options:        -Wall
-    other-extensions:   ApplicativeDo, OverloadedStrings
-    build-depends:
-        base >= 4.20 && < 4.23,
-        bytestring ^>= 0.12
-    default-language:   GHC2024
+  ghc-options: -Wall
+  other-extensions:
+    ApplicativeDo
+    OverloadedStrings
+
+  build-depends:
+    base >=4.20 && <4.23,
+    bytestring ^>=0.12,
+
+  default-language: GHC2024
 
 common relude
-    build-depends:      relude  ^>= 1.2
-    default-extensions: NoImplicitPrelude
+  build-depends: relude ^>=1.2
+  default-extensions: NoImplicitPrelude
 
 library
-    import:             common-properties, relude
-    hs-source-dirs:     src
-    exposed-modules:
-        Utils.Range
-        Lexer.Token
-        Lexer
-        AST
-    build-depends:      array ^>= 0.5
-    build-tool-depends: alex:alex ^>= 3.5
+  import: common-properties, relude
+  hs-source-dirs: src
+  exposed-modules:
+    AST
+    Lexer
+    Lexer.Token
+    Utils.Range
+
+  build-depends: array ^>=0.5
+  build-tool-depends: alex:alex ^>=3.5
 
 executable llama-hs
-    import:             common-properties, relude
-    hs-source-dirs:     app
-    main-is:            Main.hs
-    build-depends:      llama-hs
+  import: common-properties, relude
+  hs-source-dirs: app
+  main-is: Main.hs
+  build-depends: llama-hs
