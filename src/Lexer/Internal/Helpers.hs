@@ -1,5 +1,3 @@
--- {-# LANGUAGE ImplicitPrelude #-}
-
 module Lexer.Internal.Helpers where
 
 import Data.ByteString.Lazy.Char8 qualified as BS (ByteString, foldl', init, readInt, tail, take, unpack)
