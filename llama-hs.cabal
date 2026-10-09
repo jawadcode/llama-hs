@@ -13,6 +13,10 @@ category: Compilers
 build-type: Simple
 extra-doc-files: CHANGELOG.md
 
+source-repository head
+  type:     git
+  location: https://github.com/jawadcode/llama-hs.git
+
 common common-properties
   ghc-options: -Wall
   other-extensions:
@@ -35,6 +39,8 @@ library
   exposed-modules:
     AST
     Lexer
+    Lexer.Internal.Alex
+    Lexer.Internal.Helpers
     Lexer.Token
     Utils.Range
 
