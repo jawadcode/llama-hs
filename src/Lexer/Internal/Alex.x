@@ -2,13 +2,14 @@
 {-# LANGUAGE ImplicitPrelude #-}
 
 module Lexer.Internal.Alex ( AlexPosn (..), AlexInput, Alex, AlexUserState (..),
-  alexGetUserState, alexSetUserState, alexGetInput, skip, alexSetStartCode,
-  alexMove, runAlex, alexMonadScan ) where
+    alexGetUserState, alexSetUserState, alexGetInput, skip, alexSetStartCode,
+    alexMove, runAlex, alexMonadScan ) where
 
 import Data.ByteString.Lazy.Char8 (ByteString)
 import Data.ByteString.Lazy.Char8 qualified as BS (init)
 import Lexer.Token (Token (..))
-import Lexer.Internal.Helpers (alexInitUserState, enterNewComment, embedComment, unembedComment, tok, tokIdent, tokInt, tokFloat, tokStr, alexEOF)
+import Lexer.Internal.Helpers (alexInitUserState, enterNewComment, embedComment,
+    unembedComment, tok, tokIdent, tokInt, tokFloat, tokStr, alexEOF)
 }
 
 %wrapper "monadUserState-bytestring"
