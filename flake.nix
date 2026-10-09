@@ -29,7 +29,7 @@
             haskellPackages.cabal-install
             haskellPackages.cabal-gild
             haskellPackages.hlint
-            haskellPackages.ormolu
+            haskellPackages.fourmolu
           ];
           withHoogle = true;
           inputsFrom = builtins.attrValues self.packages.${system};
