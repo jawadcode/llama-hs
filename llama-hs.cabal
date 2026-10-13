@@ -2,7 +2,7 @@ cabal-version: 3.0
 name: llama-hs
 version: 0.1.0.0
 synopsis: The Llama Programming Language
-description: Empowering everyone to build nonexistent software.
+description: A high-level functional programming language.
 homepage: https://github.com/jawadcode/llama-hs.git
 license: MIT
 license-file: LICENSE
