@@ -18,8 +18,8 @@ data Token
     | End
     | {- Literals -}
       UnitLit
-    | True
-    | False
+    | TokTrue
+    | TokFalse
     | Ident Text
     | IntLit Int
     | FloatLit Float
@@ -67,6 +67,6 @@ data Token
     | Colon
     | Semi
     | EOF
-    deriving (Eq, Show)
+    deriving (Eq, Ord, Show)
 
 type RangedToken = Ranged Token

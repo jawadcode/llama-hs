@@ -14,7 +14,7 @@ build-type: Simple
 extra-doc-files: CHANGELOG.md
 
 source-repository head
-  type:     git
+  type: git
   location: https://github.com/jawadcode/llama-hs.git
 
 common common-properties
@@ -42,9 +42,13 @@ library
     Lexer.Internal.Alex
     Lexer.Internal.Helpers
     Lexer.Token
+    Parser
     Utils.Range
 
-  build-depends: array ^>=0.5
+  build-depends:
+    array ^>=0.5,
+    megaparsec ^>=9.8.3,
+
   build-tool-depends: alex:alex ^>=3.5
 
 executable llama-hs
