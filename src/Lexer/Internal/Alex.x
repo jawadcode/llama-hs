@@ -13,6 +13,7 @@ import Lexer.Internal.Helpers (alexInitUserState, enterNewComment, embedComment,
 }
 
 %wrapper "monadUserState-bytestring"
+%encoding "utf-8"
 
 $digit = 0-9      -- digits
 $alpha = [a-zA-Z] -- alphabetic characters

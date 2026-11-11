@@ -1,26 +1,20 @@
-{-# LANGUAGE TypeFamilies #-}
-
-module AST (Pass) where
+module AST () where
 
 import Relude
 
-data Pass = Parsed | Renamed | Typed
+data Expr
+    = EIdent Interned
+    | ELitUnit
+    | ELitString Str
 
-data Exp (p :: Pass)
-    = ELit (XLit p) Lit
-    | EVar (Var p)
-    | ELam (XLam p) (Var p) (Exp p)
+data Interned = Name {unIntern :: !Text, internedId :: !Int}
 
-data Var (p :: Pass) = Var (XVar p) Text
+newtype Ident = Ident Interned
 
-type family XVar (p :: Pass)
+newtype Str = Str Interned
 
-type family XLit (p :: Pass)
+instance Eq Interned where
+    n1 == n2 = internedId n1 == internedId n2
 
-data Lit
-    = LBool Bool
-    | LInt Int
-    | LFloat Float
-    | LString Text
-
-type family XLam (p :: Pass)
+instance Ord Interned where
+    compare n1 n2 = compare (internedId n1) (internedId n2)

@@ -28,7 +28,7 @@ alexEOF :: Alex RangedToken
 alexEOF = do
     (position, _, _, _) <- alexGetInput
     let pos = convertPos position
-    pure Ranged{contents = EOF, range = Range{start = pos, end = pos}}
+    pure Ranged{unRanged = EOF, range = Range pos pos}
 
 enterNewComment, embedComment, unembedComment :: Action RangedToken
 enterNewComment input len = do
@@ -45,7 +45,7 @@ unembedComment input len = do
     skip input len
 
 tok :: Token -> Action RangedToken
-tok tk input len = pure Ranged{contents = tk, range = getRange input len}
+tok tk input len = pure Ranged{unRanged = tk, range = getRange input len}
 
 tokIdent, tokInt, tokFloat, tokStr :: Action RangedToken
 tokIdent = tokHelper (decodeUtf8 >>> Ident)
@@ -55,22 +55,22 @@ tokStr = tokHelper (BS.tail >>> BS.init >>> decodeUtf8 >>> StrLit)
 
 tokHelper :: (BS.ByteString -> Token) -> Action RangedToken
 tokHelper f input@(_, _, string, _) len =
-    pure Ranged{contents = BS.take len string & f, range = getRange input len}
+    pure Ranged{unRanged = BS.take len string & f, range = getRange input len}
 
 getRange :: AlexInput -> Int64 -> Range
-getRange (start', _, string, _) len = Range{start, end}
+getRange (start', _, string, _) len = Range start end
   where
     start = convertPos start'
     end = BS.take len string & BS.foldl' alexMove start' & convertPos
 
 convertPos :: AlexPosn -> Position
-convertPos (AlexPn offset line column) = Position{offset, line, column}
+convertPos (AlexPn offset line column) = Position offset line column
 
 scanMany :: BS.ByteString -> Either String [RangedToken]
 scanMany input = runAlex input go
   where
     go = do
         output <- alexMonadScan
-        if contents output == EOF
+        if unRanged output == EOF
             then pure [output]
             else (output :) <$> go

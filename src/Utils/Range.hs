@@ -1,36 +1,42 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module Utils.Range (Range (..), Ranged (..), Position (..), rangeLen, toSourcePos) where
+module Utils.Range (Range (..), Ranged (..), Position (..), rangeLen, toSourcePos, fromSourcePos) where
 
 import Relude
-import Text.Megaparsec (SourcePos (SourcePos), mkPos)
+import Text.Megaparsec (SourcePos (SourcePos, sourceColumn, sourceLine, sourceName), mkPos)
+import Text.Megaparsec.Pos (unPos)
 import Text.Show qualified
 
-data Range = Range {start :: !Position, end :: !Position}
+data Range = Range {rangeStart :: !Position, rangeEnd :: !Position}
     deriving (Show, Eq)
 
 rangeLen :: Range -> Int
-rangeLen (Range{start, end}) = offset end - offset start
+rangeLen (Range{rangeStart, rangeEnd}) = posOffset rangeEnd - posOffset rangeStart
 
-data Ranged a = Ranged {contents :: a, range :: Range}
+-- I hate this naming convention so much but it high-key works here
+data Ranged a = Ranged {unRanged :: a, range :: Range}
 
 instance (Eq a) => Eq (Ranged a) where
-    (==) a b = (contents a) == (contents b) && (range a) == (range b)
+    (==) a b = (unRanged a) == (unRanged b) && (range a) == (range b)
 
 instance (Ord a) => Ord (Ranged a) where
-    compare = comparing contents
+    compare = comparing unRanged
 
-data Position = Position {filePath :: FilePath, offset :: !Int, line :: !Int, column :: !Int}
+data Position = Position {posOffset :: !Int, posLine :: !Int, posColumn :: !Int}
     deriving (Show, Eq, Ord)
 
-toSourcePos :: Position -> SourcePos
-toSourcePos (Position{filePath, line, column, ..}) = SourcePos filePath (mkPos line) (mkPos column)
+toSourcePos :: FilePath -> Position -> SourcePos
+toSourcePos filePath (Position{posLine, posColumn}) = SourcePos filePath (mkPos posLine) (mkPos posColumn)
+
+-- | **LOSSY CONVERSION**
+fromSourcePos :: Int -> SourcePos -> Position
+fromSourcePos posOffset (SourcePos{sourceLine, sourceColumn, ..}) = Position{posOffset, posLine = unPos sourceLine, posColumn = unPos sourceColumn}
 
 instance Semigroup Range where
-    (<>) a b = Range{start = start a `min` start b, end = end a `max` end b}
+    (<>) a b = Range{rangeStart = rangeStart a `min` rangeStart b, rangeEnd = rangeEnd a `max` rangeEnd b}
 
 instance Functor Ranged where
-    fmap f (Ranged{contents, range}) = Ranged{contents = f contents, range}
+    fmap f (Ranged{unRanged, range}) = Ranged{unRanged = f unRanged, range}
 
 instance (Show a) => Show (Ranged a) where
-    show (Ranged{contents, range}) = show contents ++ " <" ++ show range ++ ">"
+    show (Ranged{unRanged, range}) = show unRanged ++ " <" ++ show range ++ ">"
